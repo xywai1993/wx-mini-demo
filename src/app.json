@@ -1,5 +1,5 @@
 {
-    "pages": ["pages/index/main"],
+    "pages": ["pages/index/main","pages/index2/main"],
     "window": {
         "backgroundColor": "#f2f2f2",
         "backgroundTextStyle": "light",
@@ -8,8 +8,6 @@
         "navigationBarTextStyle": "black"
     },
     "sitemapLocation": "sitemap.json",
-    "style": "v2",
-    "useExtendedLib": {
-        "weui": true
-    }
+    "style": "v2"
+
 }

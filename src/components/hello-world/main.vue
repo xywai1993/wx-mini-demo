@@ -1,8 +1,8 @@
 <template>
     <div class="item">
-        <div>下面是组件内容</div>
-        <div @click="add">点我，{{ msg }}</div>
-        <div class="center">{{ demo.a }}~</div>
+        <div class="mt-30">下面是组件内容</div>
+        <div >{{ msg }}</div>
+
     </div>
 </template>
 <config lang="json">
@@ -11,26 +11,14 @@
 }
 </config>
 <script>
-import { componentSetup, componentLifetimes, pp } from "../../wx-runtime/setup-component";
 
-
-componentSetup(() => {
-
-    const demo = pp({ a: 1 })
-
-    componentLifetimes('created', function () {
-        console.log(this, 'nihao');
-    });
-
-    const add = () => {
-        demo.a++;
+Component({
+    options: {
+        styleIsolation: 'apply-shared'
+    },
+    data:{
+        msg:'hello world'
     }
-
-    return {
-        demo,
-        add
-    }
-
 })
 
 </script>

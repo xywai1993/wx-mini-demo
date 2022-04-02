@@ -1,5 +1,4 @@
 const path = require('path');
-const qs = require('querystring');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const glob = require('glob');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -9,24 +8,27 @@ function resolve(dir) {
 }
 
 function getEntry(rootSrc, paths) {
-    var map = {};
+    const map = {};
     glob.sync(rootSrc + paths).forEach((file) => {
-        var key = path.relative(rootSrc, file).replace('.vue', '');
+        let key = path.relative(rootSrc, file).replace('.vue', '');
         map[key] = file;
     });
     return map;
 }
 
-const appEntry = { app: resolve('./src/app.vue') };
-const pagesEntry = getEntry(resolve('./src'), '/pages/**/main.vue');
-const component = getEntry(resolve('./src'), '/components/**/main.vue');
+
+
+module.exports = {
+    entry(){
+        const appEntry = { app: resolve('./src/app.vue') };
+        const pagesEntry = getEntry(resolve('./src'), '/pages/**/main.vue');
+        const component = getEntry(resolve('./src'), '/components/**/main.vue');
+//        分包操作，如果需要分包的话
 // const pagesEntryB = getEntry(resolve('./src'), '/packageb/pages/**/main.js');
 // const pagesEntryC = getEntry(resolve('./src'), '/packagec/pages/**/main.js');
-const entry = Object.assign({}, appEntry, pagesEntry, component);
+        return Object.assign({}, appEntry, pagesEntry, component)
 
-console.log({ entry });
-module.exports = {
-    entry,
+},
     mode: 'development',
     devtool:'source-map',
     // mode: 'production',
@@ -54,16 +56,7 @@ module.exports = {
     },
     module: {
         rules: [
-            // {
-            //     loader: require.resolve('./loader/pitch-loader.cjs'),
-            //     resourceQuery: (query) => {
-            //         if (!query) {
-            //             return false;
-            //         }
-            //         const parsed = qs.parse(query.slice(1));
-            //         return parsed.vue != null;
-            //     },
-            // },
+
             {
                 resourceQuery: /asset-resource/,
                 type: 'asset/resource',
@@ -76,7 +69,7 @@ module.exports = {
                 type: 'asset/resource',
                 generator: {
                     filename: 'img/[name].[hash:5][ext]',
-                },
+                }
             },
 
             {
@@ -111,7 +104,8 @@ module.exports = {
                                 options: {
                                     root: 'src',
                                 },
-                            },
+                            }
+
                         ],
                     },
                 ],
@@ -126,19 +120,7 @@ module.exports = {
                 ],
             },
 
-            // {
-            //     test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-            //     loader: 'url-loader',
-            //     options: {
-            //         limit: 6,
-            //         name: 'img/[name].[hash:5].[ext]',
-            //     },
-            // },
 
-            // {
-            //     test: /.css$/i,
-            //     use: ['css-loader'],
-            // },
         ],
     },
     node: false,
